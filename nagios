@@ -1,0 +1,33 @@
+sudo apt-get install wget libsqlite -0
+wget ncpa 2.1.9 d10.amd64.deb
+sudo dpkg -i ncpa-2.1.9.d10.cmd64.deb
+sudo nano /usr/local/ncpa/etc/ncpa.cfg
+       #community_string = admin@123
+sudo systemctl restart ncpa_listener.service
+################################################################################################
+deb 1
+cd /usr/local/nagios/libexec
+sudo wget check_ncpa.py
+sudo chmod 755 /usr/local/nagios/libexec/check_ncpa
+sudo ./check_ncpa.py -V
+sudo ./check_ncpa.py -t admin@123 -H deb2 ip (windows ip) -M memory/virtual
+cd ..
+cd etc/objects
+sudo nano command.cfg
+   #define command {
+           command_name check_ncpa
+           command_line $USER1$ /check_ncpa.py -H $ HOSTADDRESS$$ARG1$
+       
+cd ..
+sudo nano nagios.cfg
+      #ctrl+w  ctrl+t ==51 uncomment
+cd ..
+sudo mkdir servers
+cd servers
+sudo nano w1.cfg
+           #copy paste commads
+cd usr/local/nagios/etc/objects
+sudo nano templates.cfg
+             #hostgroups------comment #
+
+sudo systemctl restart nagios
